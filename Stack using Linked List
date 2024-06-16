@@ -1,0 +1,82 @@
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Stack {
+    Node top;
+
+    // Push an element onto the stack
+    public void push(int data) {
+        Node newNode = new Node(data);
+        newNode.next = top;
+        top = newNode;
+    }
+
+    // Pop an element from the stack
+    public void pop() {
+        if (top == null) {
+            System.out.println("Stack is empty");
+            return;
+        }
+        System.out.println("Popped: " + top.data);
+        top = top.next;
+    }
+
+    // Display the stack
+    public void display() {
+        if (top == null) {
+            System.out.println("Stack is empty");
+            return;
+        }
+        Node temp = top;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Stack stack = new Stack();
+        Scanner scanner = new Scanner(System.in);
+        int choice, data;
+
+        do {
+            System.out.println("\n1. Push");
+            System.out.println("2. Pop");
+            System.out.println("3. Display");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter data to push: ");
+                    data = scanner.nextInt();
+                    stack.push(data);
+                    break;
+                case 2:
+                    stack.pop();
+                    break;
+                case 3:
+                    stack.display();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+}
