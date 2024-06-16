@@ -1,0 +1,206 @@
+import java.util.Scanner;
+
+// Node class for the doubly linked list
+class Node {
+    int data; // Data to be stored
+    Node prev; // Pointer to the previous node
+    Node next; // Pointer to the next node
+
+    // Constructor to initialize the node
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+// DoublyLinkedList class
+class DoublyLinkedList {
+    private Node head; // Head of the doubly linked list
+
+    // Constructor to initialize an empty doubly linked list
+    public DoublyLinkedList() {
+        this.head = null;
+    }
+
+    // Method to check if the doubly linked list is empty
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    // Method to insert a node at the beginning of the doubly linked list
+    public void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        if (isEmpty()) {
+            head = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        System.out.println(data + " inserted at the beginning");
+    }
+
+    // Method to insert a node at the end of the doubly linked list
+    public void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (isEmpty()) {
+            head = newNode;
+        } else {
+            Node current = head;
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
+            newNode.prev = current;
+        }
+        System.out.println(data + " inserted at the end");
+    }
+
+    // Method to delete a node by value from the doubly linked list
+    public void delete(int data) {
+        if (isEmpty()) {
+            System.out.println("Doubly linked list is empty");
+            return;
+        }
+
+        Node current = head;
+
+        // Search for the node to delete
+        while (current != null && current.data != data) {
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println(data + " not found in the list");
+            return;
+        }
+
+        // Adjust pointers to remove the node
+        if (current.prev == null) {
+            // If node to delete is the head
+            head = current.next;
+            if (head != null) {
+                head.prev = null;
+            }
+        } else {
+            current.prev.next = current.next;
+            if (current.next != null) {
+                current.next.prev = current.prev;
+            }
+        }
+
+        System.out.println(data + " deleted from the list");
+    }
+
+    // Method to search for a node in the doubly linked list
+    public boolean search(int data) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == data) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    // Method to display the doubly linked list from head to end
+    public void displayForward() {
+        if (isEmpty()) {
+            System.out.println("Doubly linked list is empty");
+            return;
+        }
+
+        Node current = head;
+        System.out.print("Doubly linked list (Forward): ");
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    // Method to display the doubly linked list from end to head
+    public void displayBackward() {
+        if (isEmpty()) {
+            System.out.println("Doubly linked list is empty");
+            return;
+        }
+
+        Node current = head;
+        // Traverse to the end of the list
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        System.out.print("Doubly linked list (Backward): ");
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.prev;
+        }
+        System.out.println();
+    }
+}
+
+// Main class to test the doubly linked list implementation
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DoublyLinkedList dll = new DoublyLinkedList();
+
+        while (true) {
+            System.out.println("\nDoubly Linked List Operations:");
+            System.out.println("1. Insert at Beginning");
+            System.out.println("2. Insert at End");
+            System.out.println("3. Delete");
+            System.out.println("4. Search");
+            System.out.println("5. Display Forward");
+            System.out.println("6. Display Backward");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            
+            int choice = scanner.nextInt();
+            int data;
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter data to insert at beginning: ");
+                    data = scanner.nextInt();
+                    dll.insertAtBeginning(data);
+                    break;
+                case 2:
+                    System.out.print("Enter data to insert at end: ");
+                    data = scanner.nextInt();
+                    dll.insertAtEnd(data);
+                    break;
+                case 3:
+                    System.out.print("Enter data to delete: ");
+                    data = scanner.nextInt();
+                    dll.delete(data);
+                    break;
+                case 4:
+                    System.out.print("Enter data to search: ");
+                    data = scanner.nextInt();
+                    if (dll.search(data)) {
+                        System.out.println(data + " found in the list");
+                    } else {
+                        System.out.println(data + " not found in the list");
+                    }
+                    break;
+                case 5:
+                    dll.displayForward();
+                    break;
+                case 6:
+                    dll.displayBackward();
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
+    }
+}
