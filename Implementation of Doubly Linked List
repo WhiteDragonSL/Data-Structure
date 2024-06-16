@@ -1,0 +1,140 @@
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class DoublyLinkedList {
+    private Node head;
+    private Node tail;
+
+    // Insert at the beginning of the list
+    public void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // Insert at the end of the list
+    public void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (tail == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Delete a node with the given value
+    public void delete(int data) {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if (head.data == data) {
+            if (head == tail) {
+                head = null;
+                tail = null;
+            } else {
+                head = head.next;
+                head.prev = null;
+            }
+            return;
+        }
+
+        if (tail.data == data) {
+            tail = tail.prev;
+            tail.next = null;
+            return;
+        }
+
+        Node current = head;
+        while (current != null && current.data != data) {
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Node with value " + data + " not found");
+        } else {
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+        }
+    }
+
+    // Display the list
+    public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        DoublyLinkedList list = new DoublyLinkedList();
+        Scanner scanner = new Scanner(System.in);
+        int choice, data;
+
+        do {
+            System.out.println("\n1. Insert at beginning");
+            System.out.println("2. Insert at end");
+            System.out.println("3. Delete");
+            System.out.println("4. Display");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter data to insert at beginning: ");
+                    data = scanner.nextInt();
+                    list.insertAtBeginning(data);
+                    break;
+                case 2:
+                    System.out.print("Enter data to insert at end: ");
+                    data = scanner.nextInt();
+                    list.insertAtEnd(data);
+                    break;
+                case 3:
+                    System.out.print("Enter data to delete: ");
+                    data = scanner.nextInt();
+                    list.delete(data);
+                    break;
+                case 4:
+                    list.display();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
