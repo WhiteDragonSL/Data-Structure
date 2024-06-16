@@ -4,79 +4,107 @@ class Node {
     int data;
     Node next;
 
-    public Node(int data) {
+    Node(int data) {
         this.data = data;
         this.next = null;
     }
 }
 
 class Stack {
-    Node top;
+    private Node top;
 
-    // Push an element onto the stack
+    public Stack() {
+        this.top = null;
+    }
+
+    // Push operation
     public void push(int data) {
         Node newNode = new Node(data);
-        newNode.next = top;
-        top = newNode;
-    }
-
-    // Pop an element from the stack
-    public void pop() {
         if (top == null) {
-            System.out.println("Stack is empty");
-            return;
+            top = newNode;
+        } else {
+            newNode.next = top;
+            top = newNode;
         }
-        System.out.println("Popped: " + top.data);
-        top = top.next;
+        System.out.println(data + " pushed onto stack.");
     }
 
-    // Display the stack
-    public void display() {
+    // Pop operation
+    public int pop() {
         if (top == null) {
-            System.out.println("Stack is empty");
-            return;
+            System.out.println("Stack is empty.");
+            return -1;
+        } else {
+            int poppedData = top.data;
+            top = top.next;
+            return poppedData;
         }
-        Node temp = top;
-        while (temp != null) {
-            System.out.print(temp.data + " ");
-            temp = temp.next;
-        }
-        System.out.println();
     }
 
+    // Peek operation
+    public int peek() {
+        if (top == null) {
+            System.out.println("Stack is empty.");
+            return -1;
+        } else {
+            return top.data;
+        }
+    }
+
+    // Check if stack is empty
+    public boolean isEmpty() {
+        return top == null;
+    }
+}
+
+public class StackUsingLinkedList {
     public static void main(String[] args) {
         Stack stack = new Stack();
         Scanner scanner = new Scanner(System.in);
-        int choice, data;
 
-        do {
-            System.out.println("\n1. Push");
+        while (true) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Push");
             System.out.println("2. Pop");
-            System.out.println("3. Display");
-            System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
+            System.out.println("3. Peek");
+            System.out.println("4. Check if stack is empty");
+            System.out.println("5. Exit");
 
+            int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    System.out.print("Enter data to push: ");
-                    data = scanner.nextInt();
-                    stack.push(data);
+                    System.out.println("Enter a number to push:");
+                    int number = scanner.nextInt();
+                    stack.push(number);
                     break;
                 case 2:
-                    stack.pop();
+                    int popped = stack.pop();
+                    if (popped != -1) {
+                        System.out.println("Popped: " + popped);
+                    }
                     break;
                 case 3:
-                    stack.display();
+                    int peeked = stack.peek();
+                    if (peeked != -1) {
+                        System.out.println("Top element: " + peeked);
+                    }
                     break;
                 case 4:
+                    if (stack.isEmpty()) {
+                        System.out.println("Stack is empty.");
+                    } else {
+                        System.out.println("Stack is not empty.");
+                    }
+                    break;
+                case 5:
                     System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid choice! Please try again.");
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
-        } while (choice != 4);
-
-        scanner.close();
+        }
     }
 }
